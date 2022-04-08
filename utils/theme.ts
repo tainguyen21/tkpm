@@ -6,6 +6,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: '#556cd6',
+      dark: '#343a40',
     },
     secondary: {
       main: '#19857b',
@@ -27,10 +28,25 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           color: '#000',
+          fontSize: '1.6rem',
 
           '&:hover': {
             color: 'FF6464',
           },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '1.4rem',
+        },
+      },
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          justifyContent: 'center',
         },
       },
     },
