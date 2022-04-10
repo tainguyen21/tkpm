@@ -29,10 +29,6 @@ export const theme = createTheme({
         root: {
           color: '#000',
           fontSize: '1.6rem',
-
-          '&:hover': {
-            color: 'FF6464',
-          },
         },
       },
     },
@@ -47,6 +43,20 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           justifyContent: 'center',
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        InputProps: {
+          style: {
+            fontSize: '1.4rem',
+          },
+        },
+        InputLabelProps: {
+          style: {
+            fontSize: '1.4rem',
+          },
         },
       },
     },

@@ -6,7 +6,7 @@ export interface FooterProps {}
 
 export default function Footer(_: FooterProps) {
   return (
-    <Box component="footer" bgcolor="primary.dark" py={2} textAlign="center">
+    <Box component="footer" bgcolor="primary.dark" py={2} textAlign="center" marginTop="auto">
       <Typography variant="h4" component="h3" color="#fff">
         19CLC - TKPM
       </Typography>
