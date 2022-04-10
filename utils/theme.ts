@@ -58,6 +58,12 @@ export const theme = createTheme({
             fontSize: '1.4rem',
           },
         },
+        FormHelperTextProps: {
+          style: {
+            fontSize: '1.4rem',
+            marginTop: '0.8rem',
+          },
+        },
       },
     },
   },

@@ -2,6 +2,8 @@ import { Button, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import * as React from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export interface AuthFormProps {
   type: 'LOGIN' | 'REGISTER'
@@ -26,22 +28,37 @@ const CONFIGS = {
 }
 
 export default function AuthForm(props: AuthFormProps) {
-  const { type } = props
+  const { type, onSubmit } = props
 
-  const { handleSubmit, control } = useForm<AuthFormData>({
+  const schema = yup.object({
+    phone: yup.string().matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, 'Số điện thoại không hợp lệ'),
+    password: yup.string().required('Vui lòng nhập mật khẩu').min(8, 'Mật khẩu ít nhât 8 ký tự'),
+    confirmPassword:
+      type === 'REGISTER'
+        ? yup
+            .string()
+            .oneOf([yup.ref('password'), null], 'Mật khẩu không trùng khớp')
+            .required('Vui lòng xác nhận mật khẩu')
+        : yup.string().notRequired(),
+  })
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<AuthFormData>({
     defaultValues: {
       phone: '',
       password: '',
       confirmPassword: '',
     },
+    resolver: yupResolver(schema),
   })
-
-  const _onSubmit = (data: AuthFormData) => console.log(data)
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(_onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         '& .MuiTextField-root': {
           '&:not(:last-child)': {
@@ -56,18 +73,45 @@ export default function AuthForm(props: AuthFormProps) {
       <Controller
         name="phone"
         control={control}
-        render={({ field }) => <TextField fullWidth label="Số điện thoại" variant="outlined" {...field} />}
+        render={({ field }) => (
+          <TextField
+            error={!!errors.phone}
+            helperText={errors.phone?.message}
+            fullWidth
+            label="Số điện thoại"
+            variant="outlined"
+            {...field}
+          />
+        )}
       />
       <Controller
         name="password"
         control={control}
-        render={({ field }) => <TextField fullWidth label="Mật khẩu" variant="outlined" {...field} />}
+        render={({ field }) => (
+          <TextField
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            fullWidth
+            label="Mật khẩu"
+            variant="outlined"
+            {...field}
+          />
+        )}
       />
       {type === 'REGISTER' && (
         <Controller
           name="confirmPassword"
           control={control}
-          render={({ field }) => <TextField fullWidth label="Xác nhận mật khẩu" variant="outlined" {...field} />}
+          render={({ field }) => (
+            <TextField
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
+              fullWidth
+              label="Xác nhận mật khẩu"
+              variant="outlined"
+              {...field}
+            />
+          )}
         />
       )}
 
