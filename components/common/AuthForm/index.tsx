@@ -94,6 +94,7 @@ export default function AuthForm(props: AuthFormProps) {
             fullWidth
             label="Mật khẩu"
             variant="outlined"
+            type="password"
             {...field}
           />
         )}
@@ -109,6 +110,7 @@ export default function AuthForm(props: AuthFormProps) {
               fullWidth
               label="Xác nhận mật khẩu"
               variant="outlined"
+              type="password"
               {...field}
             />
           )}

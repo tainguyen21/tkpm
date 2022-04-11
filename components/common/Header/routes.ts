@@ -8,7 +8,11 @@ export const ROUTES = [
     text: 'Booking',
   },
   {
-    path: '/auth',
-    text: 'Đăng ký/Đăng nhập',
+    path: '/login',
+    text: 'Đăng nhập',
+  },
+  {
+    path: '/register',
+    text: 'Đăng ký',
   },
 ]

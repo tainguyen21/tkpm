@@ -23,7 +23,9 @@
       "@Utils": ["./utils"],
       "@Layouts": ["./layouts"],
       "@Model": ["./models"],
-      "@Views/*": ["./views/*"]
+      "@Views/*": ["./views/*"],
+      "@Configs": ["./configs"],
+      "@Apis": ["./apis"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
