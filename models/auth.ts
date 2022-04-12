@@ -1,9 +1,5 @@
-import { BaseEntity } from './baseEntity'
+import { User } from '@Model'
 
-export type Auth = BaseEntity & {
-  fullName?: string
-  phone: string
-  password: string
-  isAdmin: boolean
+export type Auth = User & {
   accessToken: string
 }

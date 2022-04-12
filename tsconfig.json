@@ -23,7 +23,6 @@
       "@Utils": ["./utils"],
       "@Layouts": ["./layouts"],
       "@Model": ["./models"],
-      "@Views/*": ["./views/*"],
       "@Configs": ["./configs"],
       "@Apis": ["./apis"]
     }

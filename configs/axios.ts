@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { useSelector } from 'react-redux'
-import { selectAllAuths } from 'redux/auth'
+import { useAppSelector } from 'hooks'
 
 const clientRequest = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -8,8 +7,8 @@ const clientRequest = axios.create({
 
 axios.interceptors.request.use(
   (config) => {
-    const auth = useSelector(selectAllAuths)
-    const accessToken = auth[0].accessToken
+    const auth = useAppSelector((state) => state.auth)
+    const accessToken = auth.accessToken
 
     if (config.headers && accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`

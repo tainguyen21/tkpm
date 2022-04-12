@@ -1,17 +1,26 @@
-import { RootState } from '../configs/store'
 import { Auth } from '@Model'
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-import { defaultActions } from '@Utils'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const authAdapter = createEntityAdapter<Auth>({
-  selectId: (auth) => auth._id,
-})
+const initialState: Auth = {
+  _id: '',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  phone: '',
+  fullName: '',
+  accessToken: '',
+  isAdmin: false,
+}
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: authAdapter.getInitialState(),
+  initialState: initialState,
   reducers: {
-    ...defaultActions(authAdapter),
+    set(_, action: PayloadAction<Auth>) {
+      return action.payload
+    },
+    reset() {
+      return initialState
+    },
   },
 })
 
@@ -19,17 +28,4 @@ const authReducer = authSlice.reducer
 
 export default authReducer
 
-export const {
-  addOne: addOneAuth,
-  updateOne: updateOneAuth,
-  removeOne: removeOneAuth,
-  removeAll: removeAllAuth,
-} = authSlice.actions
-
-export const {
-  selectById: selectAuthById,
-  selectIds: selectAuthIds,
-  selectEntities: selectAuthEntities,
-  selectAll: selectAllAuths,
-  selectTotal: selectTotalAuths,
-} = authAdapter.getSelectors((state: RootState) => state.auth)
+export const { reset: resetAuth, set: setAuth } = authSlice.actions

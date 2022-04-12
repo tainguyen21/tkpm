@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
+import { Card, CardContent, CardMedia, Typography } from '@mui/material'
 import * as React from 'react'
 
 export interface BookItemProps {}
@@ -16,11 +16,11 @@ export default function BookItem(_: BookItemProps) {
           except Antarctica
         </Typography>
       </CardContent>
-      <CardActions>
+      {/* <CardActions>
         <Button size="small" color="primary" variant="contained">
           Share
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   )
 }
