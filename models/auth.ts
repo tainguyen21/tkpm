@@ -1,5 +1,5 @@
 import { User } from '@Model'
 
-export type Auth = User & {
+export interface Auth extends User {
   accessToken: string
 }

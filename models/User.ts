@@ -1,6 +1,6 @@
 import { BaseEntity } from '@Model'
 
-export type User = BaseEntity & {
+export interface User extends BaseEntity {
   fullName?: string
   phone: string
   isAdmin: boolean

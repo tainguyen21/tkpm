@@ -66,5 +66,47 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          '& th': {
+            fontSize: '1.4rem',
+          },
+        },
+      },
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          '& td': {
+            fontSize: '1.4rem',
+          },
+        },
+      },
+    },
+    MuiTablePagination: {
+      styleOverrides: {
+        root: {
+          '& p': {
+            fontSize: '1.4rem',
+          },
+
+          '& .MuiTablePagination-select': {
+            fontSize: '1.4rem',
+            display: 'flex',
+            alignItems: 'center',
+          },
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          '& .MuiPaper-root': {
+            padding: '32px 48px',
+          },
+        },
+      },
+    },
   },
 })

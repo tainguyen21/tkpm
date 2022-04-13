@@ -118,26 +118,8 @@ export default function AuthForm(props: AuthFormProps) {
       )}
 
       <Box textAlign="center">
-        <Button
-          variant="contained"
-          component="div"
-          sx={{ fontWeight: 700, fontSize: '1.8rem', padding: '1.2rem 2rem' }}
-        >
-          <button
-            type="submit"
-            style={{
-              backgroundColor: 'transparent',
-              border: 'none',
-              outline: 'none',
-              fontSize: 'inherit',
-              fontWeight: 'inherit',
-              color: 'inherit',
-              padding: 0,
-              cursor: 'inherit',
-            }}
-          >
-            {CONFIGS[type].submitBtn}
-          </button>
+        <Button variant="contained" type="submit" sx={{ fontWeight: 700, fontSize: '1.8rem', padding: '1.2rem 2rem' }}>
+          {CONFIGS[type].submitBtn}
         </Button>
       </Box>
     </Box>

@@ -31,7 +31,7 @@ const RegisterPage: NextPageWithLayout = (_: RegisterPageProps) => {
       setToastOpt((state) => ({
         ...state,
         open: true,
-        message: error.response.data.error.message,
+        message: error.response?.data?.error?.message || 'Hệ thống đang bảo trì',
       }))
     }
   }

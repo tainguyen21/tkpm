@@ -1,3 +1,4 @@
+import { AuthProvider } from '@Components/common/AuthProvider'
 import { store } from '@Configs'
 import { CacheProvider } from '@emotion/react'
 import { EmptyLayout } from '@Layouts'
@@ -20,16 +21,18 @@ function MyApp(props: AppPropsWithLayout) {
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
+        <AuthProvider>
+          <Head>
+            <meta name="viewport" content="initial-scale=1, width=device-width" />
+          </Head>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </AuthProvider>
       </CacheProvider>
     </Provider>
   )

@@ -26,12 +26,13 @@ const LoginPage: NextPageWithLayout = (_: LoginPageProps) => {
         })
       )
 
-      router.push('/')
+      if (res.data.user?.isAdmin) router.push('/admin/books')
+      else router.push('/')
     } catch (error: any) {
       setToastOpt((state) => ({
         ...state,
         open: true,
-        message: error.response.data.error.message,
+        message: error.response?.data?.error?.message || 'Hệ thống đang bảo trì',
       }))
     }
   }
