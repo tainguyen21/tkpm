@@ -1,5 +1,6 @@
 import CategoryForm from '@Components/CategoryForm'
 import MessageNoti, { MessageNotiProps } from '@Components/common/MessageNoti'
+import ModalConfirm from '@Components/common/ModalConfirm'
 import { AdminLayout } from '@Layouts'
 import { Category, NextPageWithLayout } from '@Model'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -17,7 +18,7 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material'
-import { createCategory, getCategories, updateCategory } from 'apis/category'
+import { createCategory, deleteCategory, getCategories, updateCategory } from 'apis/category'
 import { useEffect, useState } from 'react'
 
 interface Column {
@@ -44,6 +45,15 @@ const BooksAdmin: NextPageWithLayout = () => {
     open: false,
     type: 'ADD',
   })
+
+  const [confirmOption, setConfirmOption] = useState({
+    open: false,
+    title: '',
+    detail: '',
+    type: 'error',
+  })
+
+  const [deleteId, setDeleteId] = useState<Category['_id'] | null>(null)
 
   const [notiOption, setNotiOption] = useState<MessageNotiProps>({ open: false, message: '', type: 'error' })
 
@@ -74,7 +84,23 @@ const BooksAdmin: NextPageWithLayout = () => {
 
       setFormOption((state) => ({ ...state, open: false }))
     } catch (error: any) {
-      console.log({ error })
+      setNotiOption((state) => ({
+        ...state,
+        open: true,
+        message: error.response?.data?.error?.message || 'Hệ thống đang bảo trì',
+      }))
+    }
+  }
+
+  const onDelete = async () => {
+    try {
+      if (deleteId) {
+        const res = await deleteCategory(deleteId)
+
+        setConfirmOption((state) => ({ ...state, open: false }))
+        setCategories((state) => state.filter((item) => item._id !== res.data._id))
+      }
+    } catch (error: any) {
       setNotiOption((state) => ({
         ...state,
         open: true,
@@ -138,7 +164,20 @@ const BooksAdmin: NextPageWithLayout = () => {
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', category: row })}
                       />
-                      <DeleteIcon fontSize="large" sx={{ cursor: 'pointer' }} />
+                      <DeleteIcon
+                        fontSize="large"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setConfirmOption({
+                            open: true,
+                            title: 'Xoá thông tin',
+                            detail: 'Dữ liệu sau khi xoá sẽ không thể phục hồi. Bạn có chắc muốn xoá?',
+                            type: 'error',
+                          })
+
+                          setDeleteId(row._id)
+                        }}
+                      />
                     </TableCell>
                   </TableRow>
                 )
@@ -166,6 +205,22 @@ const BooksAdmin: NextPageWithLayout = () => {
         message={notiOption.message}
         onClose={() => setNotiOption((state) => ({ ...state, open: false }))}
         type={notiOption.type}
+      />
+
+      <ModalConfirm
+        open={confirmOption.open}
+        onClose={() => {
+          setConfirmOption((state) => ({ ...state, open: false }))
+          setDeleteId(null)
+        }}
+        onReject={() => {
+          setConfirmOption((state) => ({ ...state, open: false }))
+          setDeleteId(null)
+        }}
+        onConfirm={onDelete}
+        title={confirmOption.title}
+        detail={confirmOption.detail}
+        type={confirmOption.type as any}
       />
     </Box>
   )

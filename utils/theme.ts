@@ -103,7 +103,22 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiPaper-root': {
-            padding: '32px 48px',
+            padding: '32px',
+          },
+
+          '& .MuiDialogTitle-root': {
+            padding: 0,
+            fontSize: '1.6rem',
+            marginBottom: '1.6rem',
+          },
+
+          '& .MuiDialogContent-root': {
+            padding: 0,
+            marginBottom: '2rem',
+
+            '& .MuiDialogContentText-root': {
+              fontSize: '1.4rem',
+            },
           },
         },
       },

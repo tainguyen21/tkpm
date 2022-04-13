@@ -15,7 +15,7 @@ const HomePage: NextPageWithLayout = () => {
       </Head>
 
       <Container sx={{ py: 4 }}>
-        <BookList />
+        <BookList books={[]} />
       </Container>
     </>
   )
