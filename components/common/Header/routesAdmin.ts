@@ -8,6 +8,10 @@ export const ROUTES_ADMIN = [
     text: 'Quản lí sách',
   },
   {
+    path: '/admin/cards',
+    text: 'Quản lí thẻ',
+  },
+  {
     path: '/admin/categories',
     text: 'Thể loại sách',
   },

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useState } from 'react'
 import { setAuth } from 'redux/auth'
+import CryptoJS from 'crypto-js'
 
 export interface LoginPageProps {}
 
@@ -25,6 +26,15 @@ const LoginPage: NextPageWithLayout = (_: LoginPageProps) => {
           accessToken: res.data.accessToken,
         })
       )
+
+      if (data.rememberAuth) {
+        const hash = CryptoJS.AES.encrypt(
+          JSON.stringify({ ...res.data.user, accessToken: res.data.accessToken }),
+          process.env.NEXT_PUBLIC_SECRET_KEY!
+        ).toString()
+
+        localStorage.setItem('auth', hash)
+      }
 
       if (res.data.user?.isAdmin) router.push('/admin/books')
       else router.push('/')

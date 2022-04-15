@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@mui/material'
+import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import * as React from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -14,6 +14,7 @@ export interface AuthFormData {
   phone: string
   password: string
   confirmPassword?: string
+  rememberAuth: boolean
 }
 
 const CONFIGS = {
@@ -40,6 +41,7 @@ export default function AuthForm(props: AuthFormProps) {
             .oneOf([yup.ref('password'), null], 'Mật khẩu không trùng khớp')
             .required('Vui lòng xác nhận mật khẩu')
         : yup.string().notRequired(),
+    rememberAuth: yup.boolean(),
   })
 
   const {
@@ -51,6 +53,7 @@ export default function AuthForm(props: AuthFormProps) {
       phone: '',
       password: '',
       confirmPassword: '',
+      rememberAuth: false,
     },
     resolver: yupResolver(schema),
   })
@@ -117,7 +120,24 @@ export default function AuthForm(props: AuthFormProps) {
         />
       )}
 
-      <Box textAlign="center">
+      <Controller
+        name="rememberAuth"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            label="Ghi nhớ đăng nhập"
+            sx={{
+              paddingLeft: '1.2rem',
+              '& .MuiTypography-root': {
+                fontSize: '1.6rem',
+              },
+            }}
+            control={<Checkbox {...field} checked={field.value} sx={{ transform: 'scale(1.5)' }} />}
+          />
+        )}
+      />
+
+      <Box textAlign="center" mt={3}>
         <Button variant="contained" type="submit" sx={{ fontWeight: 700, fontSize: '1.8rem', padding: '1.2rem 2rem' }}>
           {CONFIGS[type].submitBtn}
         </Button>

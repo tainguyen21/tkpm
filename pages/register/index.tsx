@@ -26,6 +26,15 @@ const RegisterPage: NextPageWithLayout = (_: RegisterPageProps) => {
         })
       )
 
+      if (data.rememberAuth) {
+        const hash = CryptoJS.AES.encrypt(
+          JSON.stringify({ ...res.data.user, accessToken: res.data.accessToken }),
+          process.env.NEXT_PUBLIC_SECRET_KEY!
+        ).toString()
+
+        localStorage.setItem('auth', hash)
+      }
+
       router.push('/')
     } catch (error: any) {
       setToastOpt((state) => ({
