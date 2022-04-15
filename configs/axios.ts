@@ -10,8 +10,6 @@ clientRequest.interceptors.request.use(
     const auth = store.getState().auth
     const accessToken = auth.accessToken
 
-    console.log(auth, accessToken)
-
     if (config.headers && accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }

@@ -48,8 +48,6 @@ export default function CardForm(props: CardFormProps) {
     resolver: yupResolver(schema),
   })
 
-  console.log({ users })
-
   return (
     <Box
       component="form"

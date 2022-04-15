@@ -17,8 +17,6 @@ export function AuthProvider({ children }: LayoutProps) {
   useEffect(() => {
     const hash = localStorage.getItem('auth')
 
-    console.log({ hash })
-
     if (hash) {
       const bytes = CryptoJS.AES.decrypt(hash, process.env.NEXT_PUBLIC_SECRET_KEY!)
       const text = bytes.toString(CryptoJS.enc.Utf8)

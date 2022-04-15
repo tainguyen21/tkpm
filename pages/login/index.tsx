@@ -39,8 +39,6 @@ const LoginPage: NextPageWithLayout = (_: LoginPageProps) => {
       if (res.data.user?.isAdmin) router.push('/admin/books')
       else router.push('/')
     } catch (error: any) {
-      console.log({ error })
-
       setToastOpt((state) => ({
         ...state,
         open: true,

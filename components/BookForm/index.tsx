@@ -73,8 +73,6 @@ export default function BookForm(props: BookFormProps) {
     resolver: yupResolver(schema),
   })
 
-  console.log({ errors })
-
   return (
     <Box
       component="form"
