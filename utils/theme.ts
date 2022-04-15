@@ -123,5 +123,26 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      defaultProps: {
+        sx: {
+          fontSize: '1.6rem',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: '1.6rem',
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: '1.4rem',
+        },
+      },
+    },
   },
 })

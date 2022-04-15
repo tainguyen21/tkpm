@@ -10,12 +10,11 @@ export function AuthProvider({ children }: LayoutProps) {
 
   const pathName = router.pathname.slice(1).split('/')
 
-  useEffect(() => {
-    if (pathName[0] === 'admin' && !auth.isAdmin) router.push('/')
-    if (pathName[0] === 'admin' && !pathName[1]) router.push('/admin/books')
-  })
+  // useEffect(() => {
+  //   if (pathName[0] === 'admin' && !auth.isAdmin) router.push('/')
+  // })
 
-  if (pathName[0] === 'admin' && !auth.isAdmin) return null
+  // if (pathName[0] === 'admin' && !auth.isAdmin) return null
 
   return <div>{children}</div>
 }

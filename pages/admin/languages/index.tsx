@@ -1,9 +1,8 @@
-import BookForm from '@Components/BookForm'
 import MessageNoti, { MessageNotiProps } from '@Components/common/MessageNoti'
 import ModalConfirm from '@Components/common/ModalConfirm'
-import { moment } from '@Configs'
+import LanguageForm from '@Components/LanguageForm'
 import { AdminLayout } from '@Layouts'
-import { Book, Category, Language, NextPageWithLayout, Publisher } from '@Model'
+import { Language, NextPageWithLayout } from '@Model'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
@@ -19,68 +18,21 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material'
-import { createBook, deleteBook, getBooks, updateBook } from 'apis/book'
-import { getCategories } from 'apis/category'
-import { getLanguages } from 'apis/language'
-import { getPublishers } from 'apis/publisher'
+import { createLanguage, deleteLanguage, getLanguages, updateLanguage } from 'apis/language'
 import { useEffect, useState } from 'react'
 
 interface Column {
-  id: keyof Book
+  id: keyof Language
   label: string
   minWidth?: number
   align?: 'right'
   format?: (value: any) => string
 }
 
-const columns: readonly Column[] = [
-  { id: 'name', label: 'Tên', minWidth: 170 },
-  {
-    id: 'category',
-    label: 'Loại',
-    minWidth: 170,
-    format: (value: Category[]) => value.map((item) => item.name).join(' - '),
-  },
-  {
-    id: 'publishDate',
-    label: 'Ngày xuất bản',
-    minWidth: 170,
-    format: (value: Date) => moment(value).format('DD/MM/YYYY'),
-  },
-  {
-    id: 'authorName',
-    label: 'Tên tác giả',
-    minWidth: 170,
-  },
-  {
-    id: 'description',
-    label: 'Mô tả',
-    minWidth: 170,
-  },
-  {
-    id: 'stock',
-    label: 'Số lượng',
-    minWidth: 170,
-  },
-  {
-    id: 'language',
-    label: 'Ngôn ngữ',
-    minWidth: 170,
-    format: (value: Language) => value.name,
-  },
-  {
-    id: 'publisher',
-    label: 'Nhà xuất bản',
-    minWidth: 170,
-    format: (value: Publisher) => value.name,
-  },
-]
+const columns: readonly Column[] = [{ id: 'name', label: 'Tên', minWidth: 170 }]
 
-const BooksAdmin: NextPageWithLayout = () => {
-  const [books, setBooks] = useState<Book[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
+const LanguagesAdmin: NextPageWithLayout = () => {
   const [languages, setLanguages] = useState<Language[]>([])
-  const [publishers, setPublishers] = useState<Publisher[]>([])
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -88,7 +40,7 @@ const BooksAdmin: NextPageWithLayout = () => {
   const [formOption, setFormOption] = useState<{
     open: boolean
     type: 'ADD' | 'UPDATE'
-    book?: Book
+    language?: Language
   }>({
     open: false,
     type: 'ADD',
@@ -101,7 +53,7 @@ const BooksAdmin: NextPageWithLayout = () => {
     type: 'error',
   })
 
-  const [deleteId, setDeleteId] = useState<Book['_id'] | null>(null)
+  const [deleteId, setDeleteId] = useState<Language['_id'] | null>(null)
 
   const [notiOption, setNotiOption] = useState<MessageNotiProps>({ open: false, message: '', type: 'error' })
 
@@ -118,16 +70,16 @@ const BooksAdmin: NextPageWithLayout = () => {
     setFormOption((state) => ({ ...state, open: false }))
   }
 
-  const onSubmit = async (data: Book) => {
+  const onSubmit = async (data: Language) => {
     try {
       if (formOption.type === 'ADD') {
-        const res = await createBook(data)
+        const res = await createLanguage(data)
 
-        setBooks((state) => [...state, res.data])
+        setLanguages((state) => [...state, res.data])
       } else {
-        const res = await updateBook(formOption.book!._id, data)
+        const res = await updateLanguage(formOption.language!._id, data)
 
-        setBooks((state) => state.map((item) => (item._id !== formOption.book!._id ? item : res.data)))
+        setLanguages((state) => state.map((item) => (item._id !== formOption.language!._id ? item : res.data)))
       }
 
       setFormOption((state) => ({ ...state, open: false }))
@@ -143,10 +95,10 @@ const BooksAdmin: NextPageWithLayout = () => {
   const onDelete = async () => {
     try {
       if (deleteId) {
-        const res = await deleteBook(deleteId)
+        const res = await deleteLanguage(deleteId)
 
         setConfirmOption((state) => ({ ...state, open: false }))
-        setBooks((state) => state.filter((item) => item._id !== res.data._id))
+        setLanguages((state) => state.filter((item) => item._id !== res.data._id))
       }
     } catch (error: any) {
       setNotiOption((state) => ({
@@ -159,17 +111,9 @@ const BooksAdmin: NextPageWithLayout = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const books = getBooks()
-      const categories = getCategories()
-      const languages = getLanguages()
-      const publishers = getPublishers()
+      const res = await getLanguages()
 
-      const res = await Promise.all([books, categories, languages, publishers])
-
-      setBooks(res[0].data)
-      setCategories(res[1].data)
-      setLanguages(res[2].data)
-      setPublishers(res[3].data)
+      setLanguages(res.data)
     }
 
     getData()
@@ -183,7 +127,7 @@ const BooksAdmin: NextPageWithLayout = () => {
           sx={{ marginBottom: (theme) => theme.spacing(3) }}
           onClick={() => setFormOption({ open: true, type: 'ADD' })}
         >
-          Thêm sách
+          Thêm ngôn ngữ
         </Button>
       </Box>
 
@@ -197,20 +141,20 @@ const BooksAdmin: NextPageWithLayout = () => {
                     {column.label}
                   </TableCell>
                 ))}
-                <TableCell align="right" style={{ minWidth: 170 }}>
+                <TableCell align="right" style={{ minWidth: 80 }}>
                   Thao tác
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {books.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {languages.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                     {columns.map((column) => {
                       const value = row[column.id]
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format ? column.format(value) : value}
+                          {column.format && typeof value === 'number' ? column.format(value) : value}
                         </TableCell>
                       )
                     })}
@@ -218,7 +162,7 @@ const BooksAdmin: NextPageWithLayout = () => {
                       <ModeEditIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer', mr: 3 }}
-                        onClick={() => setFormOption({ open: true, type: 'UPDATE', book: row })}
+                        onClick={() => setFormOption({ open: true, type: 'UPDATE', language: row })}
                       />
                       <DeleteIcon
                         fontSize="large"
@@ -244,7 +188,7 @@ const BooksAdmin: NextPageWithLayout = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={books.length}
+          count={languages.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -253,14 +197,7 @@ const BooksAdmin: NextPageWithLayout = () => {
       </Paper>
 
       <Dialog onClose={handleClose} open={formOption.open}>
-        <BookForm
-          type={formOption.type}
-          onSubmit={onSubmit}
-          book={formOption.book}
-          category={categories}
-          language={languages}
-          publisher={publishers}
-        />
+        <LanguageForm type={formOption.type} onSubmit={onSubmit} language={formOption.language} />
       </Dialog>
 
       <MessageNoti
@@ -289,6 +226,6 @@ const BooksAdmin: NextPageWithLayout = () => {
   )
 }
 
-BooksAdmin.Layout = AdminLayout
+LanguagesAdmin.Layout = AdminLayout
 
-export default BooksAdmin
+export default LanguagesAdmin
