@@ -1,14 +1,13 @@
-import BookForm from '@Components/BookForm'
 import MessageNoti, { MessageNotiProps } from '@Components/common/MessageNoti'
 import ModalConfirm from '@Components/common/ModalConfirm'
-import { moment } from '@Configs'
+import UserForm from '@Components/UserForm'
 import { AdminLayout } from '@Layouts'
-import { Book, Category, Language, NextPageWithLayout, Publisher } from '@Model'
+import { NextPageWithLayout, User } from '@Model'
 import DeleteIcon from '@mui/icons-material/Delete'
+import DoneIcon from '@mui/icons-material/Done'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
   Box,
-  Button,
   Dialog,
   Paper,
   Table,
@@ -19,68 +18,40 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material'
-import { createBook, deleteBook, getBooks, updateBook } from 'apis/book'
-import { getCategories } from 'apis/category'
-import { getLanguages } from 'apis/language'
-import { getPublishers } from 'apis/publisher'
+import { deleteUser, getUsers, updateUser } from 'apis/user'
 import { useEffect, useState } from 'react'
 
 interface Column {
-  id: keyof Book
+  id: keyof User
   label: string
   minWidth?: number
   align?: 'right'
-  format?: (value: any) => string
+  format?: (value: any) => any
 }
 
 const columns: readonly Column[] = [
-  { id: 'name', label: 'Tên', minWidth: 170 },
+  { id: 'fullName', label: 'Tên', minWidth: 170 },
   {
-    id: 'category',
-    label: 'Loại',
-    minWidth: 170,
-    format: (value: Category[]) => value.map((item) => item.name).join(' - '),
-  },
-  {
-    id: 'publishDate',
-    label: 'Ngày xuất bản',
-    minWidth: 170,
-    format: (value: Date) => moment(value).format('DD/MM/YYYY'),
-  },
-  {
-    id: 'authorName',
-    label: 'Tên tác giả',
+    id: 'phone',
+    label: 'Số điện thoại',
     minWidth: 170,
   },
   {
-    id: 'description',
-    label: 'Mô tả',
+    id: 'isAdmin',
+    label: 'Quản trị viên',
     minWidth: 170,
+    format: (value: Boolean) => (value ? <DoneIcon /> : ''),
   },
   {
-    id: 'stock',
-    label: 'Số lượng',
+    id: 'isBlacklist',
+    label: 'Danh sách đen',
     minWidth: 170,
-  },
-  {
-    id: 'language',
-    label: 'Ngôn ngữ',
-    minWidth: 170,
-    format: (value: Language) => value.name,
-  },
-  {
-    id: 'publisher',
-    label: 'Nhà xuất bản',
-    minWidth: 170,
-    format: (value: Publisher) => value.name,
+    format: (value: Boolean) => (value ? <DoneIcon /> : ''),
   },
 ]
 
-const BooksAdmin: NextPageWithLayout = () => {
-  const [books, setBooks] = useState<Book[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
-  const [languages, setLanguages] = useState<Language[]>([])
-  const [publishers, setPublishers] = useState<Publisher[]>([])
+const UserAdmin: NextPageWithLayout = () => {
+  const [users, setUsers] = useState<User[]>([])
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -88,7 +59,7 @@ const BooksAdmin: NextPageWithLayout = () => {
   const [formOption, setFormOption] = useState<{
     open: boolean
     type: 'ADD' | 'UPDATE'
-    book?: Book
+    user?: User
   }>({
     open: false,
     type: 'ADD',
@@ -101,7 +72,7 @@ const BooksAdmin: NextPageWithLayout = () => {
     type: 'error',
   })
 
-  const [deleteId, setDeleteId] = useState<Book['_id'] | null>(null)
+  const [deleteId, setDeleteId] = useState<User['_id'] | null>(null)
 
   const [notiOption, setNotiOption] = useState<MessageNotiProps>({ open: false, message: '', type: 'error' })
 
@@ -118,16 +89,13 @@ const BooksAdmin: NextPageWithLayout = () => {
     setFormOption((state) => ({ ...state, open: false }))
   }
 
-  const onSubmit = async (data: Book) => {
+  const onSubmit = async (data: User) => {
     try {
       if (formOption.type === 'ADD') {
-        const res = await createBook(data)
-
-        setBooks((state) => [...state, res.data])
       } else {
-        const res = await updateBook(formOption.book!._id, data)
+        const res = await updateUser(formOption.user!._id, data)
 
-        setBooks((state) => state.map((item) => (item._id !== formOption.book!._id ? item : res.data)))
+        setUsers((state) => state.map((item) => (item._id !== formOption.user!._id ? item : res.data)))
       }
 
       setFormOption((state) => ({ ...state, open: false }))
@@ -143,10 +111,10 @@ const BooksAdmin: NextPageWithLayout = () => {
   const onDelete = async () => {
     try {
       if (deleteId) {
-        const res = await deleteBook(deleteId)
+        const res = await deleteUser(deleteId)
 
         setConfirmOption((state) => ({ ...state, open: false }))
-        setBooks((state) => state.filter((item) => item._id !== res.data._id))
+        setUsers((state) => state.filter((item) => item._id !== res.data._id))
       }
     } catch (error: any) {
       setNotiOption((state) => ({
@@ -159,17 +127,9 @@ const BooksAdmin: NextPageWithLayout = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const books = getBooks()
-      const categories = getCategories()
-      const languages = getLanguages()
-      const publishers = getPublishers()
+      const res = await getUsers()
 
-      const res = await Promise.all([books, categories, languages, publishers])
-
-      setBooks(res[0].data)
-      setCategories(res[1].data)
-      setLanguages(res[2].data)
-      setPublishers(res[3].data)
+      setUsers(res.data)
     }
 
     getData()
@@ -177,16 +137,6 @@ const BooksAdmin: NextPageWithLayout = () => {
 
   return (
     <Box>
-      <Box textAlign="end">
-        <Button
-          variant="contained"
-          sx={{ marginBottom: (theme) => theme.spacing(3) }}
-          onClick={() => setFormOption({ open: true, type: 'ADD' })}
-        >
-          Thêm sách
-        </Button>
-      </Box>
-
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -203,7 +153,7 @@ const BooksAdmin: NextPageWithLayout = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {books.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                     {columns.map((column) => {
@@ -218,7 +168,7 @@ const BooksAdmin: NextPageWithLayout = () => {
                       <ModeEditIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer', mr: 3 }}
-                        onClick={() => setFormOption({ open: true, type: 'UPDATE', book: row })}
+                        onClick={() => setFormOption({ open: true, type: 'UPDATE', user: row })}
                       />
                       <DeleteIcon
                         fontSize="large"
@@ -244,7 +194,7 @@ const BooksAdmin: NextPageWithLayout = () => {
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={books.length}
+          count={users.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -253,14 +203,7 @@ const BooksAdmin: NextPageWithLayout = () => {
       </Paper>
 
       <Dialog onClose={handleClose} open={formOption.open}>
-        <BookForm
-          type={formOption.type}
-          onSubmit={onSubmit}
-          book={formOption.book}
-          category={categories}
-          language={languages}
-          publisher={publishers}
-        />
+        <UserForm type={formOption.type} onSubmit={onSubmit} user={formOption.user} />
       </Dialog>
 
       <MessageNoti
@@ -289,6 +232,6 @@ const BooksAdmin: NextPageWithLayout = () => {
   )
 }
 
-BooksAdmin.Layout = AdminLayout
+UserAdmin.Layout = AdminLayout
 
-export default BooksAdmin
+export default UserAdmin

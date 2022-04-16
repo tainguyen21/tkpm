@@ -21,7 +21,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import * as React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import DoneIcon from '@mui/icons-material/Done'
 
 export interface OrderFormProps {
   type: 'ADD' | 'UPDATE'
@@ -191,7 +190,7 @@ export default function OrderForm(props: OrderFormProps) {
       {type === 'UPDATE' && order && (
         <Box mb={3}>
           <Typography component="h3" fontSize="1.6rem">
-            Chi tiết
+            Chi tiết (Tên sách - ngày trả)
           </Typography>
           {order.details?.map((item) => (
             <Stack
@@ -211,7 +210,10 @@ export default function OrderForm(props: OrderFormProps) {
               {item.status === 'PENDING' ? (
                 <Button onClick={() => onDetailDone(item._id)}>Cập nhật đã trả</Button>
               ) : (
-                <DoneIcon fontSize="large" color="success" />
+                // <DoneIcon fontSize="large" color="success" />
+                <Typography component="span" fontSize="1.4rem">
+                  {moment(item.receivedDate).format('DD/MM/YYY')}
+                </Typography>
               )}
             </Stack>
           ))}
