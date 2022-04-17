@@ -18,6 +18,12 @@ const authSlice = createSlice({
     set(_, action: PayloadAction<Auth>) {
       return action.payload
     },
+    update(state, action: PayloadAction<Auth>) {
+      return {
+        ...state,
+        ...action.payload,
+      }
+    },
     reset() {
       return initialState
     },
@@ -28,4 +34,4 @@ const authReducer = authSlice.reducer
 
 export default authReducer
 
-export const { reset: resetAuth, set: setAuth } = authSlice.actions
+export const { reset: resetAuth, set: setAuth, update: updateAuth } = authSlice.actions

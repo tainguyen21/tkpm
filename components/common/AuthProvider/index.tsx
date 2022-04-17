@@ -1,11 +1,11 @@
 import { Auth, LayoutProps } from '@Model'
+import CryptoJS from 'crypto-js'
 import { useAppDispatch, useAppSelector } from 'hooks'
+import jwtDecode from 'jwt-decode'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
-import { setAuth } from 'redux/auth'
-import jwtDecode from 'jwt-decode'
-import CryptoJS from 'crypto-js'
+import { updateAuth } from 'redux/auth'
 
 export function AuthProvider({ children }: LayoutProps) {
   const dispatch = useAppDispatch()
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: LayoutProps) {
       if ((accessToken as any).exp < Date.now() / 1000) {
         localStorage.removeItem('auth')
       } else {
-        dispatch(setAuth(auth))
+        dispatch(updateAuth(auth))
       }
     }
   }, [dispatch])

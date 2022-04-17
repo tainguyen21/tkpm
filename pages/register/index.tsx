@@ -7,7 +7,7 @@ import { useAppDispatch } from 'hooks'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useState } from 'react'
-import { setAuth } from 'redux/auth'
+import { updateAuth } from 'redux/auth'
 
 export interface RegisterPageProps {}
 
@@ -20,7 +20,7 @@ const RegisterPage: NextPageWithLayout = (_: RegisterPageProps) => {
       const res = await register(data)
 
       dispatch(
-        setAuth({
+        updateAuth({
           ...res.data.user,
           accessToken: res.data.accessToken,
         })

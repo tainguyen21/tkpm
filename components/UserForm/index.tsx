@@ -27,7 +27,7 @@ export default function UserForm(props: UserFormProps) {
   const { type, onSubmit, user } = props
 
   const schema = yup.object({
-    fullName: yup.string().required('Vui lòng nhập tên'),
+    fullName: yup.string(),
     phone: yup.string().matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, 'Số điện thoại không hợp lệ'),
     isBlacklist: yup.boolean(),
   })

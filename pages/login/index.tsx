@@ -3,12 +3,12 @@ import { MainLayout } from '@Layouts'
 import { NextPageWithLayout } from '@Model'
 import { Alert, Box, Snackbar } from '@mui/material'
 import { login } from 'apis/auth'
+import CryptoJS from 'crypto-js'
 import { useAppDispatch } from 'hooks'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useState } from 'react'
-import { setAuth } from 'redux/auth'
-import CryptoJS from 'crypto-js'
+import { updateAuth } from 'redux/auth'
 
 export interface LoginPageProps {}
 
@@ -21,7 +21,7 @@ const LoginPage: NextPageWithLayout = (_: LoginPageProps) => {
       const res = await login(data)
 
       dispatch(
-        setAuth({
+        updateAuth({
           ...res.data.user,
           accessToken: res.data.accessToken,
         })
