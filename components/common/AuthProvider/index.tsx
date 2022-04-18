@@ -33,13 +33,15 @@ export function AuthProvider({ children }: LayoutProps) {
         dispatch(updateAuth(auth))
       }
     }
+
+    dispatch(updateAuth({ isLoaded: true }))
   }, [dispatch])
 
   useEffect(() => {
-    if (pathName[0] === 'admin' && !auth.isAdmin) router.push('/')
+    if (pathName.slice(1).split('/')[0] === 'admin' && !auth.isAdmin && auth.isLoaded) router.push('/')
   })
 
-  if (pathName[0] === 'admin' && !auth.isAdmin) return null
+  if (pathName.slice(1).split('/')[0] === 'admin' && !auth.isAdmin && auth.isLoaded) return null
 
   return <div>{children}</div>
 }

@@ -1,7 +1,11 @@
 import { Auth } from '@Model'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-const initialState: Auth = {
+interface StateAuth extends Auth {
+  isLoaded?: boolean
+}
+
+const initialState: StateAuth = {
   _id: '',
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -9,16 +13,17 @@ const initialState: Auth = {
   fullName: '',
   accessToken: '',
   isAdmin: false,
+  isLoaded: false,
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
   reducers: {
-    set(_, action: PayloadAction<Auth>) {
+    set(_, action: PayloadAction<StateAuth>) {
       return action.payload
     },
-    update(state, action: PayloadAction<Auth>) {
+    update(state, action: PayloadAction<Partial<StateAuth>>) {
       return {
         ...state,
         ...action.payload,

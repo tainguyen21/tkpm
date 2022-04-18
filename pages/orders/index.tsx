@@ -1,12 +1,11 @@
 import MessageNoti, { MessageNotiProps } from '@Components/common/MessageNoti'
-import OrderForm, { OrderFormData } from '@Components/OrderForm'
+import OrderDetail from '@Components/OrderDetail'
 import { moment } from '@Configs'
-import { AdminLayout } from '@Layouts'
-import { Book, NextPageWithLayout, Order, OrderDetail, OrderStatusTranslate, User } from '@Model'
-import ModeEditIcon from '@mui/icons-material/ModeEdit'
+import { MainLayout } from '@Layouts'
+import { NextPageWithLayout, Order, OrderStatusTranslate, User } from '@Model'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Box,
-  Button,
   Dialog,
   Paper,
   Table,
@@ -17,9 +16,8 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material'
-import { getBooks } from 'apis/book'
-import { createOrder, doneOrderDetail, getOrders, updateOrder } from 'apis/order'
-import { getUsers } from 'apis/user'
+import { getOrders } from 'apis/order'
+import { useAppSelector } from 'hooks'
 import { useEffect, useState } from 'react'
 
 interface Column {
@@ -58,10 +56,10 @@ const columns: readonly Column[] = [
   },
 ]
 
-const OrderAdmin: NextPageWithLayout = () => {
+const Order: NextPageWithLayout = () => {
+  const auth = useAppSelector((state) => state.auth)
+
   const [orders, setOrders] = useState<Order[]>([])
-  const [users, setUsers] = useState<User[]>([])
-  const [books, setBooks] = useState<Book[]>([])
 
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -90,71 +88,18 @@ const OrderAdmin: NextPageWithLayout = () => {
     setFormOption((state) => ({ ...state, open: false }))
   }
 
-  const onSubmit = async (data: OrderFormData) => {
-    try {
-      if (formOption.type === 'ADD') {
-        const res = await createOrder(data)
-
-        setOrders((state) => [...state, res.data])
-      } else {
-        const res = await updateOrder(formOption.order!._id, data)
-
-        setOrders((state) => state.map((item) => (item._id !== formOption.order!._id ? item : res.data)))
-      }
-
-      setFormOption((state) => ({ ...state, open: false }))
-    } catch (error: any) {
-      setNotiOption((state) => ({
-        ...state,
-        open: true,
-        message: error.response?.data?.error?.message || 'Hệ thống đang bảo trì',
-      }))
-    }
-  }
-
-  const onDetailDone = async (detailId: OrderDetail['_id']) => {
-    try {
-      const res = await doneOrderDetail(formOption.order!._id, detailId)
-
-      setOrders((state) => state.map((item) => (item._id !== formOption.order!._id ? item : res.data)))
-      setFormOption((state) => ({ ...state, order: res.data }))
-    } catch (error: any) {
-      setNotiOption((state) => ({
-        ...state,
-        open: true,
-        message: error.response?.data?.error?.message || 'Hệ thống đang bảo trì',
-      }))
-    }
-  }
-
   useEffect(() => {
     const getData = async () => {
-      const orders = getOrders()
-      const users = getUsers()
-      const books = getBooks()
+      const res = await getOrders({ user: auth._id })
 
-      const res = await Promise.all([orders, users, books])
-
-      setOrders(res[0].data)
-      setUsers(res[1].data)
-      setBooks(res[2].data)
+      setOrders(res.data)
     }
 
-    getData()
-  }, [])
+    if (auth._id) getData()
+  }, [auth])
 
   return (
-    <Box>
-      <Box textAlign="end">
-        <Button
-          variant="contained"
-          sx={{ marginBottom: (theme) => theme.spacing(3) }}
-          onClick={() => setFormOption({ open: true, type: 'ADD' })}
-        >
-          Thêm phiếu mượn
-        </Button>
-      </Box>
-
+    <Box maxWidth="1200px" mx="auto" mt={4}>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -166,7 +111,7 @@ const OrderAdmin: NextPageWithLayout = () => {
                   </TableCell>
                 ))}
                 <TableCell align="right" style={{ minWidth: 170 }}>
-                  Thao tác
+                  Chi tiết
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -183,7 +128,7 @@ const OrderAdmin: NextPageWithLayout = () => {
                       )
                     })}
                     <TableCell align="right">
-                      <ModeEditIcon
+                      <VisibilityIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', order: row })}
@@ -207,14 +152,7 @@ const OrderAdmin: NextPageWithLayout = () => {
       </Paper>
 
       <Dialog onClose={handleClose} open={formOption.open}>
-        <OrderForm
-          type={formOption.type}
-          onSubmit={onSubmit}
-          order={formOption.order}
-          users={users}
-          books={books}
-          onDetailDone={onDetailDone}
-        />
+        <OrderDetail order={formOption.order!} />
       </Dialog>
 
       <MessageNoti
@@ -227,6 +165,6 @@ const OrderAdmin: NextPageWithLayout = () => {
   )
 }
 
-OrderAdmin.Layout = AdminLayout
+Order.Layout = MainLayout
 
-export default OrderAdmin
+export default Order

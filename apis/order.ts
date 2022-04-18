@@ -3,8 +3,8 @@ import { clientRequest } from '@Configs'
 import { Order } from '@Model'
 import { OrderFormData } from '@Components/OrderForm'
 
-export const getOrders = () => {
-  return clientRequest.get('/api/orders')
+export const getOrders = (params: any = {}) => {
+  return clientRequest.get('/api/orders', { params })
 }
 
 export const createOrder = (data: OrderFormData) => {
