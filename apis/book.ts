@@ -1,8 +1,8 @@
 import { clientRequest } from '@Configs'
 import { Book } from '@Model'
 
-export const getBooks = () => {
-  return clientRequest.get('/api/books')
+export const getBooks = (params?: Partial<Book>) => {
+  return clientRequest.get('/api/books', { params })
 }
 
 export const createBook = (data: Book) => {

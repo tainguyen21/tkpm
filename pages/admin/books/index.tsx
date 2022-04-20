@@ -55,7 +55,7 @@ const columns: readonly Column[] = [
   {
     id: 'description',
     label: 'Mô tả',
-    minWidth: 170,
+    minWidth: 220,
   },
   {
     id: 'stock',
@@ -210,7 +210,22 @@ const BooksAdmin: NextPageWithLayout = () => {
                       const value = row[column.id]
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format ? column.format(value) : value}
+                          {column.format ? (
+                            column.format(value)
+                          ) : (
+                            <Box
+                              sx={{
+                                display: '-webkit-box',
+                                '-webkit-line-clamp': '3',
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                height: '100%',
+                              }}
+                            >
+                              {value}
+                            </Box>
+                          )}
                         </TableCell>
                       )
                     })}

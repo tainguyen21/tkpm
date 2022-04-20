@@ -199,6 +199,7 @@ export default function BookForm(props: BookFormProps) {
         control={control}
         render={({ field }) => (
           <TextField
+            multiline
             error={!!errors.description}
             helperText={errors.description?.message}
             fullWidth

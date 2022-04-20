@@ -17,7 +17,17 @@ export default function BookItem(props: BookItemProps) {
         <Typography gutterBottom variant="h4" component="div">
           {book.name}
         </Typography>
-        <Typography variant="h5" color="text.secondary">
+        <Typography
+          variant="h5"
+          color="text.secondary"
+          sx={{
+            display: '-webkit-box',
+            '-webkit-line-clamp': '3',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
           {book.description}
         </Typography>
         <Typography variant="h5" color="text.secondary">
