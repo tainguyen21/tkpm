@@ -22,7 +22,7 @@ export default function BookItem(props: BookItemProps) {
           color="text.secondary"
           sx={{
             display: '-webkit-box',
-            '-webkit-line-clamp': '3',
+            WebkitLineClamp: '3',
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
             textOverflow: 'ellipsis',

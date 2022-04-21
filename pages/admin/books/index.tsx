@@ -216,7 +216,7 @@ const BooksAdmin: NextPageWithLayout = () => {
                             <Box
                               sx={{
                                 display: '-webkit-box',
-                                '-webkit-line-clamp': '3',
+                                WebkitLineClamp: '3',
                                 WebkitBoxOrient: 'vertical',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',

@@ -41,7 +41,7 @@ export function AuthProvider({ children }: LayoutProps) {
     if (pathName.slice(1).split('/')[0] === 'admin' && !auth.isAdmin && auth.isLoaded) router.push('/')
   })
 
-  if (pathName.slice(1).split('/')[0] === 'admin' && !auth.isAdmin && auth.isLoaded) return null
+  if (pathName.slice(1).split('/')[0] === 'admin' && !auth.isAdmin) return null
 
   return <div>{children}</div>
 }
