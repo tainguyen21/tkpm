@@ -3,7 +3,6 @@ import ModalConfirm from '@Components/common/ModalConfirm'
 import LanguageForm from '@Components/LanguageForm'
 import { AdminLayout } from '@Layouts'
 import { Language, NextPageWithLayout } from '@Model'
-import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
   Box,
@@ -164,7 +163,7 @@ const LanguagesAdmin: NextPageWithLayout = () => {
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', language: row })}
                       />
-                      <DeleteIcon
+                      {/* <DeleteIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
@@ -177,7 +176,7 @@ const LanguagesAdmin: NextPageWithLayout = () => {
 
                           setDeleteId(row._id)
                         }}
-                      />
+                      /> */}
                     </TableCell>
                   </TableRow>
                 )

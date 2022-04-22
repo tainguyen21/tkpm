@@ -3,7 +3,6 @@ import MessageNoti, { MessageNotiProps } from '@Components/common/MessageNoti'
 import ModalConfirm from '@Components/common/ModalConfirm'
 import { AdminLayout } from '@Layouts'
 import { Category, NextPageWithLayout } from '@Model'
-import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
   Box,
@@ -164,7 +163,7 @@ const BooksAdmin: NextPageWithLayout = () => {
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', category: row })}
                       />
-                      <DeleteIcon
+                      {/* <DeleteIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
@@ -177,7 +176,7 @@ const BooksAdmin: NextPageWithLayout = () => {
 
                           setDeleteId(row._id)
                         }}
-                      />
+                      /> */}
                     </TableCell>
                   </TableRow>
                 )

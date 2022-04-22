@@ -2,7 +2,7 @@ import MessageNoti, { MessageNotiProps } from '@Components/common/MessageNoti'
 import OrderDetail from '@Components/OrderDetail'
 import { moment } from '@Configs'
 import { MainLayout } from '@Layouts'
-import { NextPageWithLayout, Order, OrderStatusTranslate, User } from '@Model'
+import { NextPageWithLayout, Order, OrderStatusTranslate } from '@Model'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Box,
@@ -25,38 +25,37 @@ interface Column {
   label: string
   minWidth?: number
   align?: 'right'
-  format?: (value: any) => string
+  format?: (value: any) => any
 }
 
-const columns: readonly Column[] = [
-  { id: 'user', label: 'Tên người dùng', minWidth: 170, format: (value: User) => value.fullName || '' },
-  {
-    id: 'user',
-    label: 'Số điện thoại',
-    minWidth: 170,
-    format: (value: User) => value.phone,
-  },
-  {
-    id: 'createdAt',
-    label: 'Ngày mượn',
-    minWidth: 170,
-    format: (value: Date) => moment(value).format('DD/MM/YYYY'),
-  },
-  {
-    id: 'status',
-    label: 'Tình trạng',
-    minWidth: 170,
-    format: (value: string) => OrderStatusTranslate[value],
-  },
-  {
-    id: 'expiredAt',
-    label: 'Ngày hết hạn',
-    minWidth: 170,
-    format: (value: Date) => moment(value).format('DD/MM/YYYY'),
-  },
-]
-
 const Order: NextPageWithLayout = () => {
+  const columns: readonly Column[] = [
+    {
+      id: '_id',
+      label: 'STT',
+      minWidth: 170,
+      format: (value: string) => orders.findIndex((item) => item._id === value) + 1,
+    },
+    {
+      id: 'createdAt',
+      label: 'Ngày mượn',
+      minWidth: 170,
+      format: (value: Date) => moment(value).format('DD/MM/YYYY'),
+    },
+    {
+      id: 'status',
+      label: 'Tình trạng',
+      minWidth: 170,
+      format: (value: string) => OrderStatusTranslate[value],
+    },
+    {
+      id: 'expiredAt',
+      label: 'Ngày hết hạn',
+      minWidth: 170,
+      format: (value: Date) => moment(value).format('DD/MM/YYYY'),
+    },
+  ]
+
   const auth = useAppSelector((state) => state.auth)
 
   const [orders, setOrders] = useState<Order[]>([])

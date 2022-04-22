@@ -53,6 +53,7 @@ export default function BookForm(props: BookFormProps) {
     stock: yup.number().required('Vui lòng nhập số lượng'),
     language: yup.string().required('Vui lòng chọn ngôn ngữ'),
     publisher: yup.string().required('Vui lòng chọn nhà xuất bản'),
+    url: yup.string().required('Vui lòng thêm hình ảnh'),
   })
 
   const {
@@ -62,6 +63,7 @@ export default function BookForm(props: BookFormProps) {
   } = useForm<Book>({
     defaultValues: {
       name: type === 'UPDATE' && book ? book.name : '',
+      url: type === 'UPDATE' && book ? book.url : '',
       category: type === 'UPDATE' && book ? (book.category as Category[]).map((item) => item._id) : [],
       publishDate: type === 'UPDATE' && book ? book.publishDate : moment().toDate(),
       authorName: type === 'UPDATE' && book ? book.authorName : '',
@@ -97,6 +99,20 @@ export default function BookForm(props: BookFormProps) {
             helperText={errors.name?.message}
             fullWidth
             label="Tên"
+            variant="outlined"
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name="url"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            error={!!errors.url}
+            helperText={errors.url?.message}
+            fullWidth
+            label="Hình ảnh"
             variant="outlined"
             {...field}
           />

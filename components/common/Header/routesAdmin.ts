@@ -35,4 +35,8 @@ export const ROUTES_ADMIN = [
     path: '/admin/orders',
     text: 'Quản lí phiếu',
   },
+  {
+    path: '/admin/statistic',
+    text: 'Thống kê',
+  },
 ]

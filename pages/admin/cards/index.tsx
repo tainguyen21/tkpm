@@ -4,7 +4,6 @@ import ModalConfirm from '@Components/common/ModalConfirm'
 import { moment } from '@Configs'
 import { AdminLayout } from '@Layouts'
 import { Card, NextPageWithLayout, User } from '@Model'
-import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
   Box,
@@ -180,7 +179,7 @@ const CardAdmin: NextPageWithLayout = () => {
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', card: row })}
                       />
-                      <DeleteIcon
+                      {/* <DeleteIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
@@ -193,7 +192,7 @@ const CardAdmin: NextPageWithLayout = () => {
 
                           setDeleteId(row._id)
                         }}
-                      />
+                      /> */}
                     </TableCell>
                   </TableRow>
                 )

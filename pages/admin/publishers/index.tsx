@@ -3,7 +3,6 @@ import ModalConfirm from '@Components/common/ModalConfirm'
 import PublisherForm from '@Components/PublisherForm'
 import { AdminLayout } from '@Layouts'
 import { NextPageWithLayout, Publisher } from '@Model'
-import DeleteIcon from '@mui/icons-material/Delete'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
   Box,
@@ -164,7 +163,7 @@ const PublishersAdmin: NextPageWithLayout = () => {
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', publisher: row })}
                       />
-                      <DeleteIcon
+                      {/* <DeleteIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
@@ -177,7 +176,7 @@ const PublishersAdmin: NextPageWithLayout = () => {
 
                           setDeleteId(row._id)
                         }}
-                      />
+                      /> */}
                     </TableCell>
                   </TableRow>
                 )

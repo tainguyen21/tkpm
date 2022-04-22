@@ -10,4 +10,5 @@ export interface Book extends BaseEntity {
   stock: number
   language: Language['_id'] | Language
   publisher: Publisher['_id'] | Publisher
+  url: string
 }

@@ -3,7 +3,6 @@ import ModalConfirm from '@Components/common/ModalConfirm'
 import UserForm from '@Components/UserForm'
 import { AdminLayout } from '@Layouts'
 import { NextPageWithLayout, User } from '@Model'
-import DeleteIcon from '@mui/icons-material/Delete'
 import DoneIcon from '@mui/icons-material/Done'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import {
@@ -170,7 +169,7 @@ const UserAdmin: NextPageWithLayout = () => {
                         sx={{ cursor: 'pointer', mr: 3 }}
                         onClick={() => setFormOption({ open: true, type: 'UPDATE', user: row })}
                       />
-                      <DeleteIcon
+                      {/* <DeleteIcon
                         fontSize="large"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
@@ -183,7 +182,7 @@ const UserAdmin: NextPageWithLayout = () => {
 
                           setDeleteId(row._id)
                         }}
-                      />
+                      /> */}
                     </TableCell>
                   </TableRow>
                 )

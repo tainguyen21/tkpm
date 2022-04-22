@@ -63,8 +63,8 @@ export default function OrderForm(props: OrderFormProps) {
     formState: { errors },
   } = useForm<OrderFormData>({
     defaultValues: {
-      user: type === 'UPDATE' && order ? (order.user as User)._id : '',
-      books: type === 'UPDATE' && order ? order.details?.map((item) => (item.book as Book)._id) : [],
+      user: type === 'UPDATE' && order ? (order.user as User)?._id : '',
+      books: type === 'UPDATE' && order ? order.details?.map((item) => (item.book as Book)?._id) : [],
       expiredAt: type === 'UPDATE' && order ? order.expiredAt : moment().toDate(),
     },
     resolver: yupResolver(schema),
@@ -204,7 +204,7 @@ export default function OrderForm(props: OrderFormProps) {
               padding={1}
             >
               <Typography component="span" fontSize="1.4rem">
-                {(item.book as Book).name}
+                {(item.book as Book)?.name}
               </Typography>
 
               {item.status === 'PENDING' ? (

@@ -12,7 +12,15 @@ export default function BookItem(props: BookItemProps) {
 
   return (
     <Card onClick={() => onClick(book)} sx={{ cursor: 'pointer' }}>
-      <CardMedia component="img" height="220" image="https://picsum.photos/seed/picsum/200/300" alt="green iguana" />
+      <CardMedia
+        component="img"
+        height="220"
+        image={
+          book.url ||
+          'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80'
+        }
+        alt="green iguana"
+      />
       <CardContent>
         <Typography gutterBottom variant="h4" component="div">
           {book.name}
@@ -22,8 +30,8 @@ export default function BookItem(props: BookItemProps) {
           color="text.secondary"
           sx={{
             display: '-webkit-box',
-            WebkitLineClamp: '3',
-            WebkitBoxOrient: 'vertical',
+            '-webkit-line-clamp': '3',
+            '-webkit-box-orient': 'vertical',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}

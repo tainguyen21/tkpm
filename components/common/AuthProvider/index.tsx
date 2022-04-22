@@ -18,20 +18,22 @@ export function AuthProvider({ children }: LayoutProps) {
     const hash = localStorage.getItem('auth')
 
     if (hash) {
-      const bytes = CryptoJS.AES.decrypt(hash, process.env.NEXT_PUBLIC_SECRET_KEY!)
-      const text = bytes.toString(CryptoJS.enc.Utf8)
+      try {
+        const bytes = CryptoJS.AES.decrypt(hash, process.env.NEXT_PUBLIC_SECRET_KEY!)
+        const text = bytes.toString(CryptoJS.enc.Utf8)
 
-      const auth: Auth = JSON.parse(text)
+        const auth: Auth = JSON.parse(text)
 
-      //Check expired token
-      const accessToken = jwtDecode(auth.accessToken)
+        //Check expired token
+        const accessToken = jwtDecode(auth.accessToken)
 
-      //Expired
-      if ((accessToken as any).exp < Date.now() / 1000) {
-        localStorage.removeItem('auth')
-      } else {
-        dispatch(updateAuth(auth))
-      }
+        //Expired
+        if ((accessToken as any).exp < Date.now() / 1000) {
+          localStorage.removeItem('auth')
+        } else {
+          dispatch(updateAuth(auth))
+        }
+      } catch (error: any) {}
     }
 
     dispatch(updateAuth({ isLoaded: true }))
