@@ -71,7 +71,7 @@ const columnsBook: readonly Column[] = [
 
 const columnsUser: readonly Column[] = [
   { id: 'fullName', label: 'Tên', minWidth: 170, format: (value: any) => value || '' },
-  { id: 'phone', label: 'Tên', minWidth: 170 },
+  { id: 'phone', label: 'Số điện thoại', minWidth: 170 },
   { id: 'total', label: 'Lượt mượn', minWidth: 170 },
 ]
 

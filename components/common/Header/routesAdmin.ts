@@ -16,6 +16,10 @@ export const ROUTES_ADMIN = [
     text: 'Quản lí người dùng',
   },
   {
+    path: '/admin/orders',
+    text: 'Quản lí phiếu',
+  },
+  {
     path: '/admin/categories',
     text: 'Thể loại sách',
   },
@@ -30,10 +34,6 @@ export const ROUTES_ADMIN = [
   {
     path: '/admin/rules',
     text: 'Quy định',
-  },
-  {
-    path: '/admin/orders',
-    text: 'Quản lí phiếu',
   },
   {
     path: '/admin/statistic',

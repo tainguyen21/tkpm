@@ -1,5 +1,5 @@
 import { Book, Category } from '@Model'
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material'
 import * as React from 'react'
 
 export interface BookItemProps {
@@ -22,23 +22,36 @@ export default function BookItem(props: BookItemProps) {
         alt="green iguana"
       />
       <CardContent>
-        <Typography gutterBottom variant="h4" component="div">
-          {book.name}
-        </Typography>
-        <Typography
-          variant="h5"
-          color="text.secondary"
+        <Box
           sx={{
-            display: '-webkit-box',
-            '-webkit-line-clamp': '3',
-            '-webkit-box-orient': 'vertical',
+            fontSize: '1.8rem',
+            fontWeight: 700,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+          mb={2}
+          component="div"
+        >
+          {book.name}
+        </Box>
+        <Box
+          mb={2}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            fontSize: '1.6rem',
+            height: 50,
           }}
         >
           {book.description}
-        </Typography>
-        <Typography variant="h5" color="text.secondary">
+        </Box>
+        <Typography
+          variant="h5"
+          color="text.secondary"
+          fontSize="1.6rem"
+          sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        >
           {book.category.map((item) => (item as Category).name).join(' - ')}
         </Typography>
       </CardContent>

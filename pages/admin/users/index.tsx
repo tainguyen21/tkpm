@@ -18,6 +18,7 @@ import {
   TableRow,
 } from '@mui/material'
 import { deleteUser, getUsers, updateUser } from 'apis/user'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 
 interface Column {
@@ -46,6 +47,18 @@ const columns: readonly Column[] = [
     label: 'Danh sách đen',
     minWidth: 170,
     format: (value: Boolean) => (value ? <DoneIcon /> : ''),
+  },
+  {
+    id: 'birthDate',
+    label: 'Ngày sinh',
+    minWidth: 170,
+    format: (value: Date) => (value ? moment(value).format('DD/MM/YYYY') : ''),
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    minWidth: 170,
+    format: (value: string) => value || '',
   },
 ]
 

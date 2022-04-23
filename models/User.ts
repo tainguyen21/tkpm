@@ -5,4 +5,6 @@ export interface User extends BaseEntity {
   phone: string
   isBlacklist?: boolean
   isAdmin: boolean
+  birthDate?: Date
+  email?: string
 }

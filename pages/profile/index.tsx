@@ -11,6 +11,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { updateAuth } from 'redux/auth'
 import * as yup from 'yup'
 import CryptoJS from 'crypto-js'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { moment } from '@Configs'
 
 export interface ProfilePageProps {}
 
@@ -26,6 +29,8 @@ const ProfilePage: NextPageWithLayout = (_: ProfilePageProps) => {
 
   const schema = yup.object({
     fullName: yup.string(),
+    email: yup.string().email('Email không hợp lệ'),
+    birthDate: yup.date(),
     phone: yup.string().matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, 'Số điện thoại không hợp lệ'),
     isBlacklist: yup.boolean(),
   })
@@ -38,7 +43,9 @@ const ProfilePage: NextPageWithLayout = (_: ProfilePageProps) => {
   } = useForm<User>({
     defaultValues: {
       fullName: auth.accessToken ? auth.fullName : '',
+      email: auth.accessToken ? auth.email : '',
       phone: auth.accessToken ? auth.phone : '',
+      birthDate: auth.accessToken ? auth.birthDate : moment().toDate(),
       isBlacklist: auth.accessToken ? auth.isBlacklist : false,
     },
     resolver: yupResolver(schema),
@@ -83,6 +90,8 @@ const ProfilePage: NextPageWithLayout = (_: ProfilePageProps) => {
       fullName: auth.fullName || '',
       phone: auth.phone || '',
       isBlacklist: auth.isBlacklist ?? false,
+      email: auth.email || '',
+      birthDate: auth.birthDate || moment().toDate(),
     })
   }, [auth, reset])
 
@@ -132,6 +141,54 @@ const ProfilePage: NextPageWithLayout = (_: ProfilePageProps) => {
               variant="outlined"
               {...field}
             />
+          )}
+        />
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              fullWidth
+              label="Email"
+              variant="outlined"
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          name="birthDate"
+          control={control}
+          render={({ field }) => (
+            <Box
+              my={(theme) => theme.spacing(3)}
+              sx={{
+                '& .MuiFormControl-root': {
+                  width: '100%',
+                },
+
+                '& .MuiOutlinedInput-input': {
+                  fontSize: '1.6rem',
+                },
+              }}
+            >
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DesktopDatePicker
+                  label="Ngày sinh"
+                  inputFormat="DD/MM/YYYY"
+                  {...field}
+                  PaperProps={{
+                    sx: {
+                      '& .MuiButtonBase-root': {
+                        fontSize: '1.4rem',
+                      },
+                    },
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Box>
           )}
         />
         <Controller

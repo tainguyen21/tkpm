@@ -34,10 +34,22 @@ const columns: readonly Column[] = [
   { id: 'user', label: 'Tên người dùng', minWidth: 170, format: (value: User) => value.fullName || '' },
   { id: 'user', label: 'Số điện thoại', minWidth: 170, format: (value: User) => value.phone || '' },
   {
+    id: 'createdAt',
+    label: 'Ngày tạo',
+    minWidth: 170,
+    format: (value: Date) => moment(value).format('DD/MM/YYYY'),
+  },
+  {
     id: 'expiredAt',
     label: 'Ngày hết hạn',
     minWidth: 170,
     format: (value: Date) => moment(value).format('DD/MM/YYYY'),
+  },
+  {
+    id: 'expiredAt',
+    label: 'Tình trạng',
+    minWidth: 170,
+    format: (value: Date) => (moment(value) >= moment() ? 'Còn hạn' : 'Hết hạn'),
   },
 ]
 
