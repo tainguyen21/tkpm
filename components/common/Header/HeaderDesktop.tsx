@@ -1,12 +1,14 @@
 import { AppBar, Box, Container, Link as MuiLink, Stack, Typography } from '@mui/material'
-import { useAppSelector } from 'hooks'
+import { useAppDispatch, useAppSelector } from 'hooks'
 import Link from 'next/link'
 import * as React from 'react'
 import Logo from '@Publics/logo.png'
 import Image from 'next/image'
+import { resetAuth } from 'redux/auth'
 
 export default function HeaderDesktop() {
   const auth = useAppSelector((state) => state.auth)
+  const dispatch = useAppDispatch()
 
   return (
     <Box display={{ xs: 'none', lg: 'block' }}>
@@ -30,8 +32,28 @@ export default function HeaderDesktop() {
                     Quản lí mượn sách
                   </MuiLink>
                 </Link>
+                {auth.isAdmin && (
+                  <Link href="/admin/books" passHref>
+                    <MuiLink sx={{ display: 'inline-block' }} mx={3}>
+                      Trang quản lí
+                    </MuiLink>
+                  </Link>
+                )}
                 <Typography component="span" color="primary" fontSize="1.6rem" ml={3}>
                   {auth.fullName || auth.phone}
+                </Typography>
+                <Typography
+                  component="span"
+                  color="primary"
+                  fontSize="1.6rem"
+                  ml={3}
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    dispatch(resetAuth())
+                    localStorage.removeItem('auth')
+                  }}
+                >
+                  Đăng xuất
                 </Typography>
               </Box>
             ) : (
